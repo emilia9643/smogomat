@@ -61,3 +61,33 @@ Przykładowa odpowiedź (fragment):
     { "count": 1657, "coordinates": { "lat": 51.1370, "lng": 17.0338 } }
   ]
 }
+
+### stack:
+- baza danych: postgreSQL+ postGIS
+- framework fastAPI w pythonie
+- 
+
+### tabele:
+- operators: id (PK, serial), code (varchar, unique), name (varchar), website_url (varchar)
+
+- voivodeships: id (PK, serial), name (varchar, unique)
+
+- cities: id (PK, serial), voivodeship_id (FK, int), name (varchar), slug (varchar)
+
+- lockers: id (PK, serial), operator_id (FK, int), city_id (FK, int), locker_code (varchar), external_id (varchar), street_address (varchar), postal_code (varchar), latitude (numeric), longitude (numeric), location_geom (geometry), description (text), is_24_7 (boolean), has_sensor (boolean), created_at (timestamptz)
+
+- locker_opening_hours: id (PK, serial), locker_id (FK, int), day_of_week (smallint), open_time (time), close_time (time)
+
+- air_quality_levels: id (PK, serial), code (varchar, unique), label_pl (varchar), color_hex (varchar)
+
+- sensor_types: id (PK, serial), code (varchar, unique), name (varchar), unit (varchar), norm_limit_daily (numeric)
+
+- locker_sensors: id (PK, serial), locker_id (FK, int), sensor_type_id (FK, int), is_active (boolean), installed_at (timestamptz)
+
+- measurement_snapshots: id (PK, bigserial), locker_id (FK, int), overall_quality_id (FK, int), measured_at (timestamptz), fetched_at (timestamptz)
+
+- measurement_values: id (PK, bigserial), snapshot_id (FK, bigint), locker_sensor_id (FK, int), value (numeric), norm_percentage (numeric), quality_level_id (FK, int)
+
+- users: id (PK, serial), username (varchar, unique), email (varchar, unique), password_hash (varchar), role (varchar), created_at (timestamptz)
+
+- user_favorite_lockers: id (PK, serial), user_id (FK, int), locker_id (FK, int), alias_name (varchar), created_at (timestamptz)

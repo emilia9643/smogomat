@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: smogomat_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-smogomat}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-smogomat_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-smogomat}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d:ro
+
+volumes:
+  pgdata:
